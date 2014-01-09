@@ -34,7 +34,7 @@ def is_company(domain):
 def companies(raw):
     '<li><a href="../options/r-sig-geo/aesnyder--at--ncsu.edu">aesnyder at ncsu.edu</a>'
     html = fromstring(raw)
-    addresses = html.xpath('//li/a[@href]/text()')
+    addresses = html.xpath('//li/descendant::a[@href]/text()')
     domains = [re.sub(r'.* ', '', a) for a in addresses]
 #   return filter(is_company, domains)
     return domains
