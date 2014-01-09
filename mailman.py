@@ -26,7 +26,7 @@ def download_roster(l, email, password):
         fp.write(c)
 
 def is_company(domain):
-    for tld in ['edu','gmail','org']:
+    for tld in ['edu','gmail','org','ac.za','hotmail.com','yahoo.com','web.de']:
         if domain.endswith(tld):
             return False
     return True
@@ -36,7 +36,8 @@ def companies(raw):
     html = fromstring(raw)
     addresses = html.xpath('//li/a[@href]/text()')
     domains = [re.sub(r'.* ', '', a) for a in addresses]
-    return filter(is_company, domains)
+#   return filter(is_company, domains)
+    return domains
 
 def fn(l):
     return os.path.join('downloads',l.split('/')[-1] + '.html')
