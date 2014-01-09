@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 
 import requests
 from lxml.html import fromstring
@@ -24,8 +25,18 @@ def download_roster(l, email, password):
     for c in r.iter_content():
         fp.write(c)
 
+def is_company(domain):
+    for tld in ['edu','gmail','org']:
+        if domain.endswith(tld):
+            return False
+    return True
+
 def companies(raw):
+    '<li><a href="../options/r-sig-geo/aesnyder--at--ncsu.edu">aesnyder at ncsu.edu</a>'
     html = fromstring(raw)
+    addresses = html.xpath('//li/a[@href]/text()')
+    domains = [re.sub(r'.* ', '', a) for a in addresses]
+    return filter(is_company, domains)
 
 def fn(l):
     return os.path.join('downloads',l.split('/')[-1] + '.html')
